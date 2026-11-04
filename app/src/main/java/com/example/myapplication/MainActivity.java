@@ -8,6 +8,9 @@ import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
 import androidx.room.Room;
+import java.util.ArrayList;
+import java.util.Arrays;
+import android.widget.AdapterView;
 import android.widget.EditText;
 import android.view.View;
 import android.widget.Button;
@@ -22,7 +25,7 @@ public class MainActivity extends AppCompatActivity {
     private ProduktyDataBase produktyDataBase;
     private EditText editTextNazwa, editTextData, editTextCena;
     private CheckBox checkBoxCzyNapoj;
-    private Button buttonDodaj, buttonNapoje;
+    private Button buttonDodaj, buttonNapoje, buttonAktualizuj;
 
     private List<Produkty> listaProduktow, listaNapojow;
     private ArrayAdapter<Produkty> adapter;
@@ -65,6 +68,8 @@ public class MainActivity extends AppCompatActivity {
                         checkBoxCzyNapoj.isChecked()
                 );
                 produktyDataBase.zwrocProduktyDao().wstawDoBazy(produkty);
+                listaProduktow.add(produkty);
+                adapter.notifyDataSetChanged();
 
             }
         });
@@ -89,5 +94,15 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
+
+        listView.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
+            @Override
+            public boolean onItemLongClick(AdapterView<?> adapterView, View view, int i, long l) {
+                produktyDataBase.zwrocProduktyDao().usunZBazy(listaProduktow.get(i));
+                listaProduktow.remove(i);
+                adapter.notifyDataSetChanged();
+                return false;
+            }
+        });
     }
 }
