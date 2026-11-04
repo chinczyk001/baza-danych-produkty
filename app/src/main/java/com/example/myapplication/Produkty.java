@@ -25,4 +25,12 @@ public class Produkty {
 
     public Produkty() {
     }
+
+    @Override
+    public String toString() {
+        return
+                nazwa + '\n' +
+                "Ważne do: " + dataWaznosci + '\n' +
+                "Cena: " + cena;
+    }
 }

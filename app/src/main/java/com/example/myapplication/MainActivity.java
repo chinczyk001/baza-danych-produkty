@@ -12,6 +12,9 @@ import android.widget.EditText;
 import android.view.View;
 import android.widget.Button;
 import android.widget.CheckBox;
+import java.util.List;
+import android.widget.ArrayAdapter;
+import android.widget.ListView;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -19,7 +22,12 @@ public class MainActivity extends AppCompatActivity {
     private ProduktyDataBase produktyDataBase;
     private EditText editTextNazwa, editTextData, editTextCena;
     private CheckBox checkBoxCzyNapoj;
-    private Button buttonDodaj;
+    private Button buttonDodaj, buttonNapoje;
+
+    private List<Produkty> listaProduktow, listaNapojow;
+    private ArrayAdapter<Produkty> adapter;
+    private ListView listView;
+    private int temp =0;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -37,6 +45,7 @@ public class MainActivity extends AppCompatActivity {
         editTextCena = findViewById(R.id.editTextNumberCena);
         editTextData = findViewById(R.id.editTextDate);
         checkBoxCzyNapoj = findViewById(R.id.checkBox);
+        buttonNapoje = findViewById(R.id.buttonWyswietlNapoje);
 
         produktyDataBase = Room.databaseBuilder(
                 getApplicationContext(),
@@ -56,6 +65,27 @@ public class MainActivity extends AppCompatActivity {
                         checkBoxCzyNapoj.isChecked()
                 );
                 produktyDataBase.zwrocProduktyDao().wstawDoBazy(produkty);
+
+            }
+        });
+        listView=findViewById(R.id.listView);
+        listaProduktow = produktyDataBase.zwrocProduktyDao().zwrocWszystkieProdukty();
+        listaNapojow = produktyDataBase.zwrocProduktyDao().zwrocNapoje();
+        adapter = new ArrayAdapter<>(MainActivity.this, android.R.layout.simple_list_item_1, listaProduktow);
+        listView.setAdapter(adapter);
+        buttonNapoje.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if (temp == 0){
+                    adapter = new ArrayAdapter<>(MainActivity.this, android.R.layout.simple_list_item_1, listaNapojow);
+                    temp = 1;
+                    buttonNapoje.setText("Wyświetl wszystko");
+                }else{
+                    adapter = new ArrayAdapter<>(MainActivity.this, android.R.layout.simple_list_item_1, listaProduktow);
+                    temp = 0;
+                    buttonNapoje.setText("Wyświetl napoje");
+                }
+                listView.setAdapter(adapter);
             }
         });
 
