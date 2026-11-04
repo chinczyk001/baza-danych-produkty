@@ -7,8 +7,19 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
+import androidx.room.Room;
+import android.widget.EditText;
+import android.view.View;
+import android.widget.Button;
+import android.widget.CheckBox;
 
 public class MainActivity extends AppCompatActivity {
+
+
+    private ProduktyDataBase produktyDataBase;
+    private EditText editTextNazwa, editTextData, editTextCena;
+    private CheckBox checkBoxCzyNapoj;
+    private Button buttonDodaj;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -20,5 +31,33 @@ public class MainActivity extends AppCompatActivity {
             v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom);
             return insets;
         });
+
+        buttonDodaj = findViewById(R.id.buttonDodaj);
+        editTextNazwa = findViewById(R.id.editTextNazwa);
+        editTextCena = findViewById(R.id.editTextNumberCena);
+        editTextData = findViewById(R.id.editTextDate);
+        checkBoxCzyNapoj = findViewById(R.id.checkBox);
+
+        produktyDataBase = Room.databaseBuilder(
+                getApplicationContext(),
+                ProduktyDataBase.class,
+                "produkty_db"
+        )
+                .allowMainThreadQueries()
+                .build();
+
+        buttonDodaj.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Produkty produkty = new Produkty(
+                        editTextNazwa.getText().toString(),
+                        editTextData.getText().toString(),
+                        Integer.parseInt(editTextCena.getText().toString()),
+                        checkBoxCzyNapoj.isChecked()
+                );
+                produktyDataBase.zwrocProduktyDao().wstawDoBazy(produkty);
+            }
+        });
+
     }
 }
