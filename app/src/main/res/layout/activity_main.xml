@@ -60,16 +60,17 @@
         android:text="Dodaj" />
 
     <Button
-        android:id="@+id/buttonAktualizuj"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="Aktualizuj" />
-
-    <Button
         android:id="@+id/buttonWyswietlNapoje"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="Wyswietl napoje" />
+
+    <Button
+        android:id="@+id/buttonAktualizuj"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:visibility="invisible"
+        android:text="Aktualizuj" />
 
     <ListView
         android:layout_width="match_parent"

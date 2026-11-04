@@ -8,8 +8,6 @@ import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
 import androidx.room.Room;
-import java.util.ArrayList;
-import java.util.Arrays;
 import android.widget.AdapterView;
 import android.widget.EditText;
 import android.view.View;
@@ -31,6 +29,7 @@ public class MainActivity extends AppCompatActivity {
     private ArrayAdapter<Produkty> adapter;
     private ListView listView;
     private int temp =0;
+    private Produkty kliknietyProdukty;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -49,6 +48,7 @@ public class MainActivity extends AppCompatActivity {
         editTextData = findViewById(R.id.editTextDate);
         checkBoxCzyNapoj = findViewById(R.id.checkBox);
         buttonNapoje = findViewById(R.id.buttonWyswietlNapoje);
+        buttonAktualizuj = findViewById(R.id.buttonAktualizuj);
 
         produktyDataBase = Room.databaseBuilder(
                 getApplicationContext(),
@@ -102,6 +102,17 @@ public class MainActivity extends AppCompatActivity {
                 listaProduktow.remove(i);
                 adapter.notifyDataSetChanged();
                 return false;
+            }
+        });
+        listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
+                kliknietyProdukty = listaProduktow.get(i);
+                editTextNazwa.setText(kliknietyProdukty.nazwa);
+                editTextData.setText(kliknietyProdukty.dataWaznosci);
+                editTextCena.setText(String.valueOf(kliknietyProdukty.cena));
+                checkBoxCzyNapoj.setChecked(kliknietyProdukty.czyNapoj);
+                buttonAktualizuj.setVisibility(view.VISIBLE);
             }
         });
     }
