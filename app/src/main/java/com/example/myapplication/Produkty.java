@@ -3,7 +3,7 @@ package com.example.myapplication;
 import androidx.room.Entity;
 import androidx.room.PrimaryKey;
 
-@Entity
+@Entity(tableName = "produkty")
 public class Produkty {
     @PrimaryKey(autoGenerate = true)
     public int id;
