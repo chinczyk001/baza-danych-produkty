@@ -115,5 +115,17 @@ public class MainActivity extends AppCompatActivity {
                 buttonAktualizuj.setVisibility(view.VISIBLE);
             }
         });
+        buttonAktualizuj.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                kliknietyProdukty.nazwa = editTextNazwa.getText().toString();
+                kliknietyProdukty.dataWaznosci = editTextData.getText().toString();
+                kliknietyProdukty.cena = Integer.parseInt(editTextCena.getText().toString());
+                kliknietyProdukty.czyNapoj = checkBoxCzyNapoj.isChecked();
+                produktyDataBase.zwrocProduktyDao().aktualizuj(kliknietyProdukty);
+                adapter.notifyDataSetChanged();
+                buttonAktualizuj.setVisibility(view.INVISIBLE);
+            }
+        });
     }
 }
